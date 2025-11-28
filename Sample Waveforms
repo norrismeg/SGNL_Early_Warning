@@ -134,12 +134,12 @@
         "print(conditioned.sample_rate)"
       ],
       "metadata": {
-        "id": "bCqb-uMn92_7",
-        "outputId": "953985d5-4ffb-4748-af57-e9906b3116d2",
         "colab": {
           "base_uri": "https://localhost:8080/",
           "height": 356
-        }
+        },
+        "id": "bCqb-uMn92_7",
+        "outputId": "953985d5-4ffb-4748-af57-e9906b3116d2"
       },
       "execution_count": 21,
       "outputs": [
