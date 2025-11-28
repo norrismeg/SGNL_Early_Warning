@@ -4,7 +4,7 @@
   "metadata": {
     "colab": {
       "provenance": [],
-      "authorship_tag": "ABX9TyPhZ5JkE0eeXKBIbdJTkJBa",
+      "authorship_tag": "ABX9TyPfdzmUFnwv852pgzjPLSi3",
       "include_colab_link": true
     },
     "kernelspec": {
@@ -61,16 +61,54 @@
         "segment = (int(gps)-1000, int(gps)-5)\n",
         "print(segment)\n",
         "from gwpy.timeseries import TimeSeries\n",
+        "from gwpy.signal.filter_design import highpass\n",
         "strain = TimeSeries.fetch_open_data('L1', *segment, verbose=True)\n",
         "#print(ldata)\n",
-        "from pycbc.catalog import Merger\n",
-        "from pycbc.filter import resample_to_delta_t, highpass\n",
+        "#from pycbc.catalog import Merger\n",
+        "#from pycbc.filter import resample_to_delta_t, highpass\n",
         "# As an example we use the GW150914 data\n",
         "#merger = Merger(\"GW150914\")\n",
         "\n",
         "# Get the data from the Hanford detector\n",
         "#strain = merger.strain('H1')\n",
-        "\n",
+        "\n"
+      ],
+      "metadata": {
+        "colab": {
+          "base_uri": "https://localhost:8080/",
+          "height": 280
+        },
+        "id": "7nxGa7mXsGcS",
+        "outputId": "8fc5872f-e3b5-4b36-e7c1-cb2cfa4aba39"
+      },
+      "execution_count": 20,
+      "outputs": [
+        {
+          "output_type": "stream",
+          "name": "stdout",
+          "text": [
+            "1239082262.1\n",
+            "(1239081262, 1239082257)\n",
+            "Fetched 1 URLs from gwosc.org for [1239081262 .. 1239082257))\n",
+            "Reading data... [Done]\n"
+          ]
+        },
+        {
+          "output_type": "error",
+          "ename": "NameError",
+          "evalue": "name 'filter_design' is not defined",
+          "traceback": [
+            "\u001b[0;31m---------------------------------------------------------------------------\u001b[0m",
+            "\u001b[0;31mNameError\u001b[0m                                 Traceback (most recent call last)",
+            "\u001b[0;32m/tmp/ipython-input-788749138.py\u001b[0m in \u001b[0;36m<cell line: 0>\u001b[0;34m()\u001b[0m\n\u001b[1;32m     17\u001b[0m \u001b[0;34m\u001b[0m\u001b[0m\n\u001b[1;32m     18\u001b[0m \u001b[0;31m# Remove the low frequency content and downsample the data to 2048Hz\u001b[0m\u001b[0;34m\u001b[0m\u001b[0;34m\u001b[0m\u001b[0m\n\u001b[0;32m---> 19\u001b[0;31m \u001b[0mstrain\u001b[0m \u001b[0;34m=\u001b[0m \u001b[0mfilter_design\u001b[0m\u001b[0;34m.\u001b[0m\u001b[0mhighpass\u001b[0m\u001b[0;34m(\u001b[0m\u001b[0mstrain\u001b[0m\u001b[0;34m,\u001b[0m \u001b[0;36m10.0\u001b[0m\u001b[0;34m)\u001b[0m\u001b[0;34m\u001b[0m\u001b[0;34m\u001b[0m\u001b[0m\n\u001b[0m\u001b[1;32m     20\u001b[0m \u001b[0mconditioned\u001b[0m \u001b[0;34m=\u001b[0m \u001b[0mstrain\u001b[0m\u001b[0;34m.\u001b[0m\u001b[0mcrop\u001b[0m\u001b[0;34m(\u001b[0m\u001b[0;36m2\u001b[0m\u001b[0;34m,\u001b[0m \u001b[0;36m2\u001b[0m\u001b[0;34m)\u001b[0m\u001b[0;34m\u001b[0m\u001b[0;34m\u001b[0m\u001b[0m\n\u001b[1;32m     21\u001b[0m \u001b[0;31m#strain = resample_to_delta_t(strain, 1.0/2048)\u001b[0m\u001b[0;34m\u001b[0m\u001b[0;34m\u001b[0m\u001b[0m\n",
+            "\u001b[0;31mNameError\u001b[0m: name 'filter_design' is not defined"
+          ]
+        }
+      ]
+    },
+    {
+      "cell_type": "code",
+      "source": [
         "# Remove the low frequency content and downsample the data to 2048Hz\n",
         "strain = highpass(strain, 10.0)\n",
         "conditioned = strain.crop(2, 2)\n",
@@ -96,31 +134,26 @@
         "print(conditioned.sample_rate)"
       ],
       "metadata": {
-        "id": "7nxGa7mXsGcS",
-        "outputId": "e4dc9da3-7553-4d45-b94b-92da3153ad27",
+        "id": "bCqb-uMn92_7",
+        "outputId": "953985d5-4ffb-4748-af57-e9906b3116d2",
         "colab": {
-          "base_uri": "https://localhost:8080/"
+          "base_uri": "https://localhost:8080/",
+          "height": 356
         }
       },
-      "execution_count": 8,
+      "execution_count": 21,
       "outputs": [
         {
-          "output_type": "stream",
-          "name": "stdout",
-          "text": [
-            "1239082262.1\n",
-            "(1239082257, 1239082267)\n",
-            "Fetched 1 URLs from gwosc.org for [1239082257 .. 1239082267))\n",
-            "Reading data... [Done]\n",
-            "TimeSeries([-8.42597565e-19, -8.52437103e-19, -8.60738804e-19,\n",
-            "            ...,  1.38850270e-19,  1.37760541e-19,\n",
-            "             1.38094202e-19]\n",
-            "           unit: dimensionless,\n",
-            "           t0: 1239082257.0 s,\n",
-            "           dt: 0.000244140625 s,\n",
-            "           name: Strain,\n",
-            "           channel: None)\n",
-            "4096.0\n"
+          "output_type": "error",
+          "ename": "TypeError",
+          "evalue": "only length-1 arrays can be converted to Python scalars",
+          "traceback": [
+            "\u001b[0;31m---------------------------------------------------------------------------\u001b[0m",
+            "\u001b[0;31mTypeError\u001b[0m                                 Traceback (most recent call last)",
+            "\u001b[0;32m/tmp/ipython-input-3570837378.py\u001b[0m in \u001b[0;36m<cell line: 0>\u001b[0;34m()\u001b[0m\n\u001b[1;32m      1\u001b[0m \u001b[0;31m# Remove the low frequency content and downsample the data to 2048Hz\u001b[0m\u001b[0;34m\u001b[0m\u001b[0;34m\u001b[0m\u001b[0m\n\u001b[0;32m----> 2\u001b[0;31m \u001b[0mstrain\u001b[0m \u001b[0;34m=\u001b[0m \u001b[0mhighpass\u001b[0m\u001b[0;34m(\u001b[0m\u001b[0mstrain\u001b[0m\u001b[0;34m,\u001b[0m \u001b[0;36m10.0\u001b[0m\u001b[0;34m)\u001b[0m\u001b[0;34m\u001b[0m\u001b[0;34m\u001b[0m\u001b[0m\n\u001b[0m\u001b[1;32m      3\u001b[0m \u001b[0mconditioned\u001b[0m \u001b[0;34m=\u001b[0m \u001b[0mstrain\u001b[0m\u001b[0;34m.\u001b[0m\u001b[0mcrop\u001b[0m\u001b[0;34m(\u001b[0m\u001b[0;36m2\u001b[0m\u001b[0;34m,\u001b[0m \u001b[0;36m2\u001b[0m\u001b[0;34m)\u001b[0m\u001b[0;34m\u001b[0m\u001b[0;34m\u001b[0m\u001b[0m\n\u001b[1;32m      4\u001b[0m \u001b[0;31m#strain = resample_to_delta_t(strain, 1.0/2048)\u001b[0m\u001b[0;34m\u001b[0m\u001b[0;34m\u001b[0m\u001b[0m\n\u001b[1;32m      5\u001b[0m \u001b[0;34m\u001b[0m\u001b[0m\n",
+            "\u001b[0;32m/usr/local/lib/python3.12/dist-packages/gwpy/signal/filter_design.py\u001b[0m in \u001b[0;36mhighpass\u001b[0;34m(frequency, sample_rate, fstop, gpass, gstop, type, **kwargs)\u001b[0m\n\u001b[1;32m    487\u001b[0m     \"\"\"\n\u001b[1;32m    488\u001b[0m     \u001b[0msample_rate\u001b[0m \u001b[0;34m=\u001b[0m \u001b[0m_as_float\u001b[0m\u001b[0;34m(\u001b[0m\u001b[0msample_rate\u001b[0m\u001b[0;34m)\u001b[0m\u001b[0;34m\u001b[0m\u001b[0;34m\u001b[0m\u001b[0m\n\u001b[0;32m--> 489\u001b[0;31m     \u001b[0mfrequency\u001b[0m \u001b[0;34m=\u001b[0m \u001b[0m_as_float\u001b[0m\u001b[0;34m(\u001b[0m\u001b[0mfrequency\u001b[0m\u001b[0;34m)\u001b[0m\u001b[0;34m\u001b[0m\u001b[0;34m\u001b[0m\u001b[0m\n\u001b[0m\u001b[1;32m    490\u001b[0m     \u001b[0;32mif\u001b[0m \u001b[0mfstop\u001b[0m \u001b[0;32mis\u001b[0m \u001b[0;32mNone\u001b[0m\u001b[0;34m:\u001b[0m\u001b[0;34m\u001b[0m\u001b[0;34m\u001b[0m\u001b[0m\n\u001b[1;32m    491\u001b[0m         \u001b[0mfstop\u001b[0m \u001b[0;34m=\u001b[0m \u001b[0mfrequency\u001b[0m \u001b[0;34m*\u001b[0m \u001b[0;36m2\u001b[0m\u001b[0;34m/\u001b[0m\u001b[0;36m3.\u001b[0m\u001b[0;34m\u001b[0m\u001b[0;34m\u001b[0m\u001b[0m\n",
+            "\u001b[0;32m/usr/local/lib/python3.12/dist-packages/gwpy/signal/filter_design.py\u001b[0m in \u001b[0;36m_as_float\u001b[0;34m(x)\u001b[0m\n\u001b[1;32m     40\u001b[0m \u001b[0;32mdef\u001b[0m \u001b[0m_as_float\u001b[0m\u001b[0;34m(\u001b[0m\u001b[0mx\u001b[0m\u001b[0;34m)\u001b[0m\u001b[0;34m:\u001b[0m\u001b[0;34m\u001b[0m\u001b[0;34m\u001b[0m\u001b[0m\n\u001b[1;32m     41\u001b[0m     \u001b[0;32mtry\u001b[0m\u001b[0;34m:\u001b[0m\u001b[0;34m\u001b[0m\u001b[0;34m\u001b[0m\u001b[0m\n\u001b[0;32m---> 42\u001b[0;31m         \u001b[0;32mreturn\u001b[0m \u001b[0mfloat\u001b[0m\u001b[0;34m(\u001b[0m\u001b[0mx\u001b[0m\u001b[0;34m.\u001b[0m\u001b[0mvalue\u001b[0m\u001b[0;34m)\u001b[0m\u001b[0;34m\u001b[0m\u001b[0;34m\u001b[0m\u001b[0m\n\u001b[0m\u001b[1;32m     43\u001b[0m     \u001b[0;32mexcept\u001b[0m \u001b[0mAttributeError\u001b[0m\u001b[0;34m:\u001b[0m\u001b[0;34m\u001b[0m\u001b[0;34m\u001b[0m\u001b[0m\n\u001b[1;32m     44\u001b[0m         \u001b[0;32mreturn\u001b[0m \u001b[0mfloat\u001b[0m\u001b[0;34m(\u001b[0m\u001b[0mx\u001b[0m\u001b[0;34m)\u001b[0m\u001b[0;34m\u001b[0m\u001b[0;34m\u001b[0m\u001b[0m\n",
+            "\u001b[0;31mTypeError\u001b[0m: only length-1 arrays can be converted to Python scalars"
           ]
         }
       ]
